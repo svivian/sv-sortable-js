@@ -106,7 +106,7 @@ SV.Sortable = (function() {
 		 */
 		const sortTable = function(thElem, sortDir) {
 
-			let dataType = thElem.getAttribute('data-sort');
+			let dataType = thElem.getAttribute('data-sort-type');
 			if (!dataType)
 				return;
 
@@ -137,8 +137,9 @@ SV.Sortable = (function() {
 				if (newSortDir === dir.desc)
 					sortedRows.reverse();
 
-				// reinsert rows in table - appendChild does this nicely by moving existing rows instead of duplicating them
+				// replace rows in table - surprisingly this is faster than using documentFragment
 				let tbody = tableElem.querySelector('tbody');
+				tbody.innerHTML = '';
 				for (let trElem of sortedRows) {
 					tbody.appendChild(trElem);
 				}
@@ -156,7 +157,7 @@ SV.Sortable = (function() {
 				}
 
 				// trigger after-sort event
-				tableElem.dispatchEvent(new CustomEvent('sv.sortable.after'));
+				tableElem.dispatchEvent(new CustomEvent('sv.sortable.after', {detail: evDetail}));
 			}, 10);
 		};
 

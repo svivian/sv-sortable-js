@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>SV-Sortable - complex example</title>
+	<link rel="stylesheet" href="styles.css?dev">
+
+	<script defer src="../sv-sortable.js?dev"></script>
+	<script>
+		// convert string of the form "Mar 15, 1987" into a Date object.
+		const dateFromString = function(str) {
+			const months = [
+				"jan", "feb", "mar", "apr", "may", "jun",
+				"jul", "aug", "sep", "oct", "nov", "dec",
+			];
+
+			str = str.trim();
+			let pattern = /^([a-zA-Z]{3}) *(\d{1,2}), *(\d{4})$/;
+			let regex = new RegExp(pattern);
+			let dateParts = regex.exec(str);
+
+			let year = dateParts[3];
+			let month = months.indexOf(dateParts[1].toLowerCase());
+			let day = dateParts[2];
+
+			return new Date(year, month, day);
+		};
+
+		// blank strings are 'undefined' in sorting, so this moves them to the end
+		const moveBlanks = function(a, b) {
+			if (a < b) {
+				if (a == "")
+					return 1;
+				else
+					return -1;
+			}
+			if (a > b) {
+				if (b == "")
+					return -1;
+				else
+					return 1;
+			}
+			return 0;
+		};
+
+		document.addEventListener('DOMContentLoaded', function() {
+			let table = document.querySelector('table');
+			let sortable = new SV.Sortable(table, {
+				sortFns: {
+					"date": function(a, b) {
+						let aDate = dateFromString(a);
+						let bDate = dateFromString(b);
+
+						return aDate - bDate;
+					},
+					"moveBlanks": moveBlanks,
+				}
+			});
+
+			table.addEventListener('sv.sortable.before', function(ev) {
+				document.querySelector('#msg').textContent = "Sorting index " + ev.detail.column;
+			});
+
+			table.addEventListener('sv.sortable.after', function(ev) {
+				let thArrows = table.querySelectorAll('th .arrow');
+				for (let arrow of thArrows) {
+					arrow.remove();
+				}
+
+				let arrowEntity = event.detail.dir === sortable.dir.asc ? "&uarr;" : "&darr;";
+				event.detail.th.innerHTML += '<span class="arrow">' + arrowEntity + '</span>';
+			});
+		});
+	</script>
+</head>
+
+<body>
+
+	<h1>SV-Sortable - complex example</h1>
+
+	<p>This example showcases several of the more advanced features, including specifying sort values, custom data types and callbacks. View the source of this file for more details.</p>
+
+	<p id="msg">&nbsp;</p>
+
+	<table>
+		<thead>
+			<tr>
+				<th data-sort-type="int">int</th>
+				<th data-sort-type="int">int</th>
+				<th data-sort-type="float" data-sort-default="desc">float</th>
+				<th data-sort-type="moveBlanks" data-sort-desc="moveBlanksDesc">string</th>
+				<th data-sort-type="string-ins">case</th>
+				<th>Can't sort me!</th>
+				<th data-sort-type="date">date</th>
+				<th data-sort-type="int">Letter frequency</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>15</td>
+				<td>15</td>
+				<td>-.18</td>
+				<td>banana</td>
+				<td>Homer</td>
+				<td>arbitrary</td>
+				<td>Sep 15, 2002</td>
+				<td data-sort-value="0">E</td>
+			</tr>
+			<tr>
+				<td>95</td>
+				<td>95</td>
+				<td>36</td>
+				<td></td>
+				<td>purple</td>
+				<td>pointless</td>
+				<td>Aug 07, 2004</td>
+				<td data-sort-value="1">T</td>
+			</tr>
+			<tr>
+				<td>2</td>
+				<td>2</td>
+				<td>-152.5</td>
+				<td></td>
+				<td>is</td>
+				<td>silly</td>
+				<td>Mar 15, 1986</td>
+				<td data-sort-value="2">A</td>
+			</tr>
+			<tr>
+				<td>-53</td>
+				<td>-53</td>
+				<td>88.5</td>
+				<td>hello</td>
+				<td>a</td>
+				<td>eccentric</td>
+				<td>Feb 27, 2086</td>
+				<td data-sort-value="3">O</td>
+			</tr>
+			<tr>
+				<td>195</td>
+				<td>195</td>
+				<td>-858</td>
+				<td>orange</td>
+				<td>fruit</td>
+				<td>garbage</td>
+				<td>Mar 15, 1986</td>
+				<td data-sort-value="4">I</td>
+			</tr>
+		</tbody>
+	</table>
+
+</body>
+</html>

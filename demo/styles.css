@@ -1,0 +1,50 @@
+/* common styles for all demos */
+body {
+	margin: 20px;
+	padding: 0;
+	font-family: system-ui, Ubuntu, Helvetica, Arial, sans-serif;
+}
+table {
+	border-collapse: collapse;
+}
+th, td {
+	padding: 5px 10px;
+	border: 1px solid #999;
+}
+th {
+	background-color: #eee;
+}
+th[data-sort-type] {
+	cursor: pointer;
+}
+
+#msg {
+	color: #0a0;
+}
+.arrow {
+	margin-left: 0.25rem;
+}
+
+/* some random additional styles for the large table example, for a more real-world situation */
+#large-table {
+	margin: 1em auto;
+}
+#large-table th, #large-table td {
+	font-size: 12px;
+}
+#large-table td.name {
+	font-weight: bold;
+}
+#large-table td.email {
+	color: #666;
+	text-decoration: underline;
+}
+#large-table tr:nth-child(even) > td {
+	background-color: #f9f9f9;
+}
+#large-table tr:nth-child(odd) > td {
+	background-color: #ffffff;
+}
+#large-table.disabled {
+	opacity: 0.5;
+}
