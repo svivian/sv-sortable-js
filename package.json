@@ -1,0 +1,22 @@
+{
+  "name": "sv-sortable",
+  "version": "2.0.0",
+  "description": "A simple JavaScript library to sort HTML tables",
+  "main": "src/sv-sortable.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/svivian/sv-sortable-js.git"
+  },
+  "keywords": [
+    "javascript",
+    "table",
+    "sort"
+  ],
+  "author": "Scott Vivian",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/svivian/sv-sortable-js/issues"
+  },
+  "homepage": "https://github.com/svivian/sv-sortable-js#readme"
+}
