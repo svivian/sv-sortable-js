@@ -113,6 +113,30 @@ new SV.Sortable(table, {
 Then we would use `data-sort-type="surname"` on the table header.
 
 
+## Methods
+
+Sortable has one public property and two public methods that can be called on the object returned from the constructor:
+
+### `.dir`
+
+A property (basically an enum) containing the strings for the sorting directions, 'asc' and 'desc'. It's recommended to use this instead of hard-coding the strings in your code.
+
+### `.sortColumn(index, sortDir)`
+
+A function to manually sort a column in the given direction. Columns are 0-indexed, and the direction is optional (defaulting to ascending). As above, use the `dir` property for sorting direction. Example:
+
+```js
+const table = document.querySelector('#data');
+let sortable = new SV.Sortable(table);
+// sort the third column downwards
+sortable.sortColumn(2, sortable.dir.desc);
+```
+
+### `.getThByIndex(index)`
+
+A function to get a specific table header, taking colspans into account.
+
+
 ## Events
 
 Sortable supports two custom events: `sv.sortable.before` and `sv.sortable.after`, which are called respectively (can you guess?) *before* the table sorting begins and *after* sorting is finished. This allows you to, for example, display a message like "Processing..." while the sorting is running (if using a very large table where a delay might be noticeable). The events are triggered on the table element itself.
@@ -134,6 +158,4 @@ The event object passed to the callback function has a `detail` property, which 
 
 - `th` - a reference to the table header that was clicked
 - `column` - the index of the column being sorted
-- `dir` - the direction of the sort, either 'asc' or 'desc'
-
-The Sortable object returned from the constructor has a `dir` property, which is an enum of the directions, e.g. `sortable.asc` or `sortable.desc`.
+- `dir` - the direction of the sort, matching the `sortable.dir` enum
