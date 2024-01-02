@@ -41,22 +41,18 @@ SV.Sortable = (function() {
 		/**
 		 * Override default options with user config.
 		 */
-		const extend = function(defaults, userArgs) {
-			for (let i in userArgs) {
-				if (i === 'sortFns')
-					defaults[i] = extend(defaults[i], userArgs[i]);
-				else
-					defaults[i] = userArgs[i];
-			}
+		const extend = function(defaults, params) {
+			let newConfig = Object.assign({}, defaults, params);
+			if (params.sortFns)
+				newConfig.sortFns = Object.assign({}, defaults.sortFns, params.sortFns);
 
-			return defaults;
+			return newConfig;
 		};
 
 		/**
 		 * Get index (0-based) of table header cell, taking into account any colspans.
 		 */
 		const getThIndex = function(element) {
-			let siblings = Array.from(element.parentElement.children);
 			let index = 0;
 
 			for (let th of element.parentElement.children) {
@@ -165,6 +161,9 @@ SV.Sortable = (function() {
 		 * Set up the table for sorting, optionally perform initial sort.
 		 */
 		const init = function() {
+			if (!tableElem)
+				throw 'Error: invalid table element supplied';
+
 			config = extend(defaultOptions, userConfig);
 
 			tableElem.addEventListener('click', function(ev) {
