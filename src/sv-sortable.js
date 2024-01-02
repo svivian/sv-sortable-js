@@ -40,6 +40,9 @@ SV.Sortable = (function() {
 
 		/**
 		 * Override default options with user config.
+		 * @param {Object} defaults - Default options.
+		 * @param {Object} params - User config.
+		 * @returns {Object} - Merged config.
 		 */
 		const extend = function(defaults, params) {
 			let newConfig = Object.assign({}, defaults, params);
@@ -51,6 +54,8 @@ SV.Sortable = (function() {
 
 		/**
 		 * Get index (0-based) of table header cell, taking into account any colspans.
+		 * @param {Element} element - Table header cell.
+		 * @returns {Number} - Index of cell.
 		 */
 		const getThIndex = function(element) {
 			let index = 0;
@@ -67,7 +72,11 @@ SV.Sortable = (function() {
 		}
 
 		/**
-		 * Sort table rows on column thIndex using sortCompareFn.
+		 * Execute the actual sorting.
+		 * @param {Array} allRows - Array of table rows.
+		 * @param {Number} thIndex - Index of column to sort on.
+		 * @param {Function} sortCompareFn - Sorting function for cell values.
+		 * @returns {Array} - Array of sorted rows.
 		 */
 		const sortData = function(allRows, thIndex, sortCompareFn) {
 			let column = [];
@@ -99,6 +108,9 @@ SV.Sortable = (function() {
 
 		/**
 		 * Sort the table and trigger appropriate events.
+		 * @param {Element} thElem - Table header cell.
+		 * @param {String} sortDir - Sorting direction.
+		 * @returns {void}
 		 */
 		const sortTable = function(thElem, sortDir) {
 
@@ -159,6 +171,7 @@ SV.Sortable = (function() {
 
 		/**
 		 * Set up the table for sorting, optionally perform initial sort.
+		 * @returns {void}
 		 */
 		const init = function() {
 			if (!tableElem)
@@ -183,6 +196,9 @@ SV.Sortable = (function() {
 
 		/**
 		 * Manually sort a column.
+		 * @param {Number} index - Column to sort (0-indexed).
+		 * @param {String} sortDir - Optional sorting direction ('asc' or 'desc').
+		 * @returns {void}
 		 */
 		methods.sortColumn = function(index, sortDir) {
 			let thElem = methods.getThByIndex(index);
@@ -194,6 +210,8 @@ SV.Sortable = (function() {
 
 		/**
 		 * Get cell at index, taking colspans into account.
+		 * @param {Number} index - Column to fetch (0-indexed).
+		 * @returns {Element|null} - Table header cell.
 		 */
 		methods.getThByIndex = function(index) {
 			let allHeaders = Array.from(tableElem.querySelectorAll(':scope > thead > tr > th'));
