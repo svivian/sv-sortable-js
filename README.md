@@ -2,7 +2,9 @@
 SV-Sortable
 =================================================
 
-**sv-sortable-js** is a vanilla JavaScript library for sorting a table. No dependencies, and it just sorts (if you want filtering as well, check out [SV-Filtable](https://github.com/svivian/sv-filtable-js)).
+**sv-sortable-js** is a vanilla JavaScript library for sorting a table. No dependencies, and it just sorts. There are functions for manually sorting, plus custom events that can be hooked into.
+
+If you want table filtering as well, check out [SV-Filtable](https://github.com/svivian/sv-filtable-js). Both libraries are independent but work nicely in tandem.
 
 
 ## Example usage
@@ -119,7 +121,7 @@ Sortable has one public property and two public methods that can be called on th
 
 ### `.dir`
 
-A property (basically an enum) containing the strings for the sorting directions, 'asc' and 'desc'. It's recommended to use this instead of hard-coding the strings in your code.
+An enum-like property containing the strings for the sorting directions, 'asc' and 'desc'. It's recommended to use this instead of hard-coding the strings in your code.
 
 ### `.sortColumn(index, sortDir)`
 
