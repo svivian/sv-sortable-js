@@ -36,7 +36,7 @@ If you want table filtering as well, check out [SV-Filtable](https://github.com/
 2. Include the Sortable script in your page's `<head>`. For performance reasons we are using the `defer` attribute:
 
 	```html
-	<script defer src="/path/to/sv-filtable.js"></script>
+	<script defer src="/path/to/sv-sortable.js"></script>
 	```
 
 3. Call `SV.Sortable` with an HTMLElement object for the table (such as that returned from `document.querySelector`), and any custom options. As we are deferring script loading above, we must run this after page load:
