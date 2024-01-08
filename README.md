@@ -7,6 +7,19 @@ SV-Sortable
 If you want table filtering as well, check out [SV-Filtable](https://github.com/svivian/sv-filtable-js). Both libraries are independent but work nicely in tandem.
 
 
+## Installation
+
+Sortable can be installed via npm:
+
+```sh
+npm install sv-sortable
+```
+
+Then use the file `node_modules/sv-sortable/src/sv-sortable.js` in your project - either directly in a `<script>` tag, or passing into your bundler/task runner.
+
+Alternatively, you can download the latest release from GitHub and use the file `src/sv-sortable.js`.
+
+
 ## Example usage
 
 1. Start with standard table HTML, including the `<thead>` and `<tbody>` elements. Each column that you want to sort should have a table header with the `data-sort-type` attribute set to the data type:
@@ -45,7 +58,9 @@ If you want table filtering as well, check out [SV-Filtable](https://github.com/
 	<script>
 	// Run on page load
 	document.addEventListener('DOMContentLoaded', function() {
+		// get the table element
 		const table = document.querySelector('#data');
+		// create a new Sortable object
 		let sortable = new SV.Sortable(table, {
 			initialSort: 0
 		});
@@ -58,7 +73,7 @@ Voila! Clicking on the table headers will now sort the table by that column.
 
 ## Configuration
 
-Sortable has two means of controlling the sorting, using data attributes:
+Sortable has several means of controlling the sorting, using data attributes:
 
 ### `data-sort-type`
 
@@ -70,6 +85,10 @@ Used on headers (`<th>` elements) to specify the data type of the column. Sortab
 - `string-ins` - for case-insensitive strings
 
 Custom types can be added using the `sortFns` option (see below).
+
+### `data-sort-default`
+
+Used on headers (`<th>` elements) to specify which sorting direction to use first. By default Sortable sorts columns in ascending order, but by setting `data-sort-default="desc"` on a header, the first click of that header will sort the column in descending order.
 
 ### `data-sort-value`
 

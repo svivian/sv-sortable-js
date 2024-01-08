@@ -72,6 +72,21 @@ SV.Sortable = (function() {
 		}
 
 		/**
+		 * Get the direction in which we should sort this column. Defaults to ascending, unless otherwise specified or it's already sorted.
+		 * @param {Element} thElem - Table header cell.
+		 * @returns {String} - Sorting direction.
+		 */
+		const getNewSortDirection = function(thElem) {
+			let currSortDir = thElem.getAttribute('data-sort-dir');
+
+			if (currSortDir) {
+				return currSortDir === dir.asc ? dir.desc : dir.asc;
+			}
+
+			return thElem.getAttribute('data-sort-default') || dir.asc;
+		}
+
+		/**
 		 * Execute the actual sorting.
 		 * @param {Array} allRows - Array of table rows.
 		 * @param {Number} thIndex - Index of column to sort on.
@@ -120,14 +135,9 @@ SV.Sortable = (function() {
 
 			let thIndex = getThIndex(thElem);
 			let sortCompareFn = config.sortFns[dataType] || config.sortFns['string'];
-			// default to ascending sort
-			let newSortDir;
-			if (sortDir) {
-				newSortDir = sortDir;
-			} else {
-				let currSortDir = thElem.getAttribute('data-sort-dir');
-				newSortDir = currSortDir === dir.asc ? dir.desc : dir.asc;
-			}
+
+			// use manually specified sort direction if supplied, otherwise determine it based on current state
+			const newSortDir = sortDir || getNewSortDirection(thElem);
 
 			// trigger before-sort event
 			const evDetail = {
