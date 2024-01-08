@@ -46,7 +46,7 @@ SV.Sortable = (function() {
 		 */
 		const extend = function(defaults, params) {
 			let newConfig = Object.assign({}, defaults, params);
-			if (params.sortFns)
+			if (params && params.sortFns)
 				newConfig.sortFns = Object.assign({}, defaults.sortFns, params.sortFns);
 
 			return newConfig;
