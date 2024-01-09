@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Test Suite</title>
+	<link rel="stylesheet" href="../node_modules/qunit/qunit/qunit.css">
+	<script src="../src/sv-sortable.js"></script>
+</head>
+
+<body>
+
+	<div id="qunit" style="position:static"></div>
+
+	<div id="qunit-fixture">
+		<table id="basic">
+			<thead>
+				<tr>
+					<th data-sort-type="int">int</th>
+					<th data-sort-type="float">float</th>
+					<th data-sort-type="string">string</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>15</td>
+					<td>-.18</td>
+					<td>banana</td>
+				</tr>
+				<tr>
+					<td>95</td>
+					<td>36</td>
+					<td>coke</td>
+				</tr>
+				<tr>
+					<td>2</td>
+					<td>-152.5</td>
+					<td>apple</td>
+				</tr>
+				<tr>
+					<td>-53</td>
+					<td>88.5</td>
+					<td>zebra</td>
+				</tr>
+				<tr>
+					<td>195</td>
+					<td>-858</td>
+					<td>orange</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<table id="colspan">
+			<thead>
+				<tr>
+					<th colspan="4">The Big Table Header</th>
+				</tr>
+				<tr>
+					<th data-sort-type="string">Letter</td>
+					<th data-sort-type="string" colspan="2">colspan=2</th>
+					<th data-sort-type="int">Number</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>def</td>
+					<td>X</td>
+					<td>9</td>
+					<td>1</td>
+				</tr>
+				<tr>
+					<td>abc</td>
+					<td>Z</td>
+					<td>8</td>
+					<td>2</td>
+				</tr>
+				<tr>
+					<td>bcd</td>
+					<td>Y</td>
+					<td>7</td>
+					<td>0</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<table id="complex">
+			<thead>
+				<tr>
+					<th data-sort-type="int">int</th>
+					<th data-sort-type="int">int</th>
+					<th data-sort-type="float" data-sort-default="desc">float</th>
+					<th data-sort-type="moveBlanks" data-sort-desc="moveBlanksDesc">string</th>
+					<th data-sort-type="string-ins">case</th>
+					<th>Can't sort me!</th>
+					<th data-sort-type="date">date</th>
+					<th data-sort-type="int">Letter frequency</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>15</td>
+					<td>15</td>
+					<td>-.18</td>
+					<td>banana</td>
+					<td>Homer</td>
+					<td>arbitrary</td>
+					<td>Sep 15, 2002</td>
+					<td data-sort-value="0">E</td>
+				</tr>
+				<tr>
+					<td>95</td>
+					<td>95</td>
+					<td>36</td>
+					<td></td>
+					<td>purple</td>
+					<td>pointless</td>
+					<td>Aug 07, 2004</td>
+					<td data-sort-value="1">T</td>
+				</tr>
+				<tr>
+					<td>2</td>
+					<td>2</td>
+					<td>-152.5</td>
+					<td></td>
+					<td>is</td>
+					<td>silly</td>
+					<td>May 15, 1986</td>
+					<td data-sort-value="2">A</td>
+				</tr>
+				<tr>
+					<td>-53</td>
+					<td>-53</td>
+					<td>88.5</td>
+					<td>hello</td>
+					<td>a</td>
+					<td>eccentric</td>
+					<td>Feb 27, 2086</td>
+					<td data-sort-value="3">O</td>
+				</tr>
+				<tr>
+					<td>195</td>
+					<td>195</td>
+					<td>-858</td>
+					<td>orange</td>
+					<td>fruit</td>
+					<td>garbage</td>
+					<td>Mar 15, 1986</td>
+					<td data-sort-value="4">I</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<script src="../node_modules/qunit/qunit/qunit.js"></script>
+	<script src="tests.js"></script>
+
+
+</body>
+</html>

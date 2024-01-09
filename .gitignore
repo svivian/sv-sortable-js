@@ -1,3 +1,6 @@
+/node_modules
+/package-lock.json
+
 # Numerous always-ignore extensions
 *.bak
 *.diff

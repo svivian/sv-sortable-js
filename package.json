@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/svivian/sv-sortable-js/issues"
   },
-  "homepage": "https://github.com/svivian/sv-sortable-js#readme"
+  "homepage": "https://github.com/svivian/sv-sortable-js#readme",
+  "devDependencies": {
+    "qunit": "^2.20.0"
+  }
 }
