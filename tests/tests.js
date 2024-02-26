@@ -26,12 +26,16 @@ function runAsyncTest(assert, setupCallback, assertCallback) {
  * @param {String} testName - Name of the test.
  * @param {Element} table - Table element to sort.
  * @param {Number} colIndex - Index of column to sort (1-indexed like nth-child).
- * @param {Array} expected - Expected values of the column after sorting.
+ * @param {Array} checkStateCallback - Function to run after the sort to check the state of the table, which takes the table, colIndex, and assert object as arguments.
  * @param {Number} numClicks - Number of times to click the column header.
  */
-function testTableSort(testName, table, colIndex, expected, numClicks = 1) {
+function testTableSort(testName, table, colIndex, checkStateCallback, numClicks = 1) {
 	QUnit.test(testName, function(assert) {
 		let asyncSetup = function() {
+			// no clicks (e.g. testing initial state)
+			if (colIndex === null)
+				return;
+
 			let intCol = table.querySelector(`thead > tr > th:nth-child(${colIndex})`);
 			// space out multiple clicks to allow the DOM to update
 			for (let i = 0; i < numClicks; i++) {
@@ -40,14 +44,22 @@ function testTableSort(testName, table, colIndex, expected, numClicks = 1) {
 		};
 
 		let runAsserts = function() {
-			let colCells = table.querySelectorAll(`tbody > tr > td:nth-child(${colIndex})`);
-			let colValues = Array.from(colCells).map((cell) => cell.innerText);
-			assert.deepEqual(colValues, expected);
+			checkStateCallback(table, colIndex, assert);
 		};
 
 		runAsyncTest(assert, asyncSetup, runAsserts);
 	});
 }
+
+
+// Creates a function to be passed into testTableSort that checks the values of a column match expectation.
+const createCheckColumnValuesCallback = function(expected) {
+	return function(table, colIndex, assert) {
+		let colCells = table.querySelectorAll(`tbody > tr > td:nth-child(${colIndex})`);
+		let colValues = Array.from(colCells).map((cell) => cell.innerText);
+		assert.deepEqual(colValues, expected);
+	};
+};
 
 
 // convert string of the form "Mar 15, 1987" into a Date object.
@@ -112,26 +124,36 @@ let complexSortable = new SV.Sortable(complexTable, {
 
 // run tests
 
-testTableSort('Basic integer sort', basicTable, 1, ['-53', '2', '15', '95', '195']);
-testTableSort('Basic float sort', basicTable, 2, ['-858', '-152.5', '-.18', '36', '88.5']);
-testTableSort('Basic string sort', basicTable, 3, ['apple', 'banana', 'coke', 'orange', 'zebra']);
+testTableSort('Basic integer sort', basicTable, 1, createCheckColumnValuesCallback(['-53', '2', '15', '95', '195']));
+testTableSort('Basic float sort', basicTable, 2, createCheckColumnValuesCallback(['-858', '-152.5', '-.18', '36', '88.5']));
+testTableSort('Basic string sort', basicTable, 3, createCheckColumnValuesCallback(['apple', 'banana', 'coke', 'orange', 'zebra']));
 
-testTableSort('Colspan sort', colspanTable, 2, ['X', 'Y', 'Z']);
+testTableSort('Colspan sort', colspanTable, 2, createCheckColumnValuesCallback(['X', 'Y', 'Z']));
 
-QUnit.test('Complex initialSort option', function(assert) {
-	let asyncSetup = function() {};
-
-	let runAsserts = function() {
-		let intCells = complexTable.querySelectorAll(`tbody > tr > td:nth-child(1)`);
-		let intValues = Array.from(intCells).map((cell) => cell.innerText);
-		assert.deepEqual(intValues, ['-53', '2', '15', '95', '195']);
-	};
-
-	runAsyncTest(assert, asyncSetup, runAsserts);
+testTableSort('Complex initialSort option', complexTable, null, function(table, colIndex, assert) {
+	let intCells = table.querySelectorAll(`tbody > tr > td:nth-child(1)`);
+	let intValues = Array.from(intCells).map((cell) => cell.innerText);
+	assert.deepEqual(intValues, ['-53', '2', '15', '95', '195']);
 });
 
-testTableSort('Complex descending sort', complexTable, 3, ['88.5', '36', '-.18', '-152.5', '-858']);
-testTableSort('Complex blank sort', complexTable, 4, ['banana', 'hello', 'orange', '', '']);
-testTableSort('Complex date sort', complexTable, 7, ['Mar 15, 1986', 'May 15, 1986', 'Sep 15, 2002', 'Aug 07, 2004', 'Feb 27, 2086']);
-testTableSort('Complex custom value sort', complexTable, 8, ['E', 'T', 'A', 'O', 'I']);
-testTableSort('Complex blank sort descending', complexTable, 4, ['', '', 'orange', 'hello', 'banana'], 2);
+testTableSort(
+	'Complex descending sort', complexTable, 3,
+	createCheckColumnValuesCallback(['88.5', '36', '-.18', '-152.5', '-858'])
+);
+testTableSort(
+	'Complex blank sort', complexTable, 4,
+	createCheckColumnValuesCallback(['banana', 'hello', 'orange', '', ''])
+);
+testTableSort(
+	'Complex date sort', complexTable, 7,
+	createCheckColumnValuesCallback(['Mar 15, 1986', 'May 15, 1986', 'Sep 15, 2002', 'Aug 07, 2004', 'Feb 27, 2086'])
+);
+testTableSort(
+	'Complex custom value sort', complexTable, 8,
+	createCheckColumnValuesCallback(['E', 'T', 'A', 'O', 'I'])
+);
+testTableSort(
+	'Complex blank sort descending', complexTable, 4,
+	createCheckColumnValuesCallback(['', '', 'orange', 'hello', 'banana']),
+	2
+);
