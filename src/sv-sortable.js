@@ -165,12 +165,12 @@ SV.Sortable = (function() {
 				// set appropriate class and data on table headers
 				let allHeaders = tableElem.querySelectorAll('thead th');
 				for (let otherTh of allHeaders) {
+					// reset header first
+					otherTh.removeAttribute('data-sort-dir');
+					otherTh.classList.remove('sorting-asc', 'sorting-desc');
 					if (otherTh === thElem) {
 						thElem.setAttribute('data-sort-dir', newSortDir);
 						thElem.classList.add('sorting-' + newSortDir);
-					} else {
-						otherTh.removeAttribute('data-sort-dir');
-						otherTh.classList.remove('sorting-asc', 'sorting-desc');
 					}
 				}
 

@@ -61,6 +61,14 @@ const createCheckColumnValuesCallback = function(expected) {
 	};
 };
 
+// Creates a function to be passed into testTableSort, that checks the classes of the header match expectation.
+const createCheckHeaderClassCallback = function(expectedClass, unexpectedClass) {
+	return function(table, colIndex, assert) {
+		let header = table.querySelector(`thead > tr > th:nth-child(${colIndex})`);
+		assert.ok(header.classList.contains(expectedClass));
+		assert.notOk(header.classList.contains(unexpectedClass));
+	};
+}
 
 // convert string of the form "Mar 15, 1987" into a Date object.
 const dateFromString = function(str) {
@@ -157,3 +165,6 @@ testTableSort(
 	createCheckColumnValuesCallback(['', '', 'orange', 'hello', 'banana']),
 	2
 );
+
+testTableSort('Correct header classes descending', basicTable, 1, createCheckHeaderClassCallback('sorting-desc', 'sorting-asc'), 2);
+testTableSort('Correct header classes ascending', basicTable, 1, createCheckHeaderClassCallback('sorting-asc', 'sorting-desc'));
