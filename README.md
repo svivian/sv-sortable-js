@@ -1,4 +1,3 @@
-
 SV-Sortable
 =================================================
 
@@ -17,7 +16,7 @@ npm install sv-sortable
 
 Then use the file `node_modules/sv-sortable/src/sv-sortable.js` in your project - either directly in a `<script>` tag, or passing into your bundler/task runner.
 
-Alternatively, you can download the latest release from GitHub and use the file `src/sv-sortable.js`.
+Alternatively, you can download or link to a minified version via [jsDelivr](https://www.jsdelivr.com/package/npm/sv-sortable).
 
 
 ## Example usage
